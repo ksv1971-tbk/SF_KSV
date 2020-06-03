@@ -1,39 +1,41 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[7]:
 
 
-import numpy as np
-
-def middle_area(search_start, search_finish):
+def mean_area(search_start, search_finish):
     '''Функция принимает два числа - нижнюю границу поиска и верхнюю границу поиска, 
     и возвращает число, равное середине области поиска'''
-    predict = (search_start + search_finish)//2
-    return predict
+    mean = (search_start + search_finish)//2
+    return mean
+
 
 def game_core_v3(number):
-    '''Сначала устанавливаем число, равное середине области поиска, 
+    '''Задаём нижнюю и верхнюю границы поиска.
+       Сначала устанавливаем число, равное середине области поиска, 
        и если это не загаданное число - сужаем область поиска вдвое.
        Функция принимает загаданное число и возвращает число попыток'''
-    search_start = 1                                              # задаём нижнюю границу поиска
-    search_finish = 100                                           # задаём верхнюю границу поиска
-    predict = middle_area(search_start, search_finish)            # задаём начало поиска 
-    count = 1                                                     # начинаем подсчёт числа попыток
+    search_start = 1                                              
+    search_finish = 100                                           
+    predict = mean_area(search_start, search_finish)          
+    count = 1                                                     
     while number != predict:
         count+=1
         if number > predict: 
             search_start = predict + 1
-            predict = middle_area(search_start, search_finish)
+            predict = mean_area(search_start, search_finish)
         elif number < predict: 
             search_finish = predict - 1
-            predict = middle_area(search_start, search_finish)
-    return(count) # выход из цикла, если угадали
+            predict = mean_area(search_start, search_finish)
+    return(count) 
+
 
 def score_game(game_core):
     '''Запускаем игру 1000 раз, чтобы узнать, как быстро игра угадывает число'''
+    import numpy as np
     count_ls = []
-    np.random.seed(1)  # фиксируем RANDOM SEED, чтобы эксперимент был воспроизводим!
+    np.random.seed(1)
     random_array = np.random.randint(1,101, size=(1000))
     for number in random_array:
         count_ls.append(game_core(number))
@@ -41,8 +43,15 @@ def score_game(game_core):
     print(f"Ваш алгоритм угадывает число в среднем за {score} попыток")
     return(score)
 
-# запускаем
+
+# запускаем алгоритм угадывания числа
 score_game(game_core_v3)
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
